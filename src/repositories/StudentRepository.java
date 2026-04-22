@@ -1,5 +1,7 @@
 package src.repositories;
 
+import src.exceptions.DataNotFoundException;
+import src.exceptions.DuplicateDataException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +65,10 @@ public class StudentRepository implements Repository<Student, String> {
     }
 
     @Override
-    public void create(Student student) {
+    public void create(Student student) throws DuplicateDataException {
+        if (findById(student.getId()) != null){
+            throw new DuplicateDataException("Gagal: Student dengan ID " + student.getId() + " sudah terdaftar!");
+        }
         datas.add(student);
         saveToFile(datas);
     }
@@ -79,7 +84,10 @@ public class StudentRepository implements Repository<Student, String> {
     }
 
     @Override
-    public void update(String nim, Student newData) {
+    public void update(String nim, Student newData) throws DataNotFoundException {
+        if (findById(nim) == null){
+            throw new DataNotFoundException("Gagal: Student dengan ID " + nim + " tidak ditemukan.");
+        }
         for (int i = 0; i < datas.size(); i++) {
             if (datas.get(i).getId().equals(nim)) {
                 datas.set(i, newData);
@@ -90,7 +98,10 @@ public class StudentRepository implements Repository<Student, String> {
     }
 
     @Override
-    public void delete(String nim) {
+    public void delete(String nim) throws DataNotFoundException {
+        if (findById(nim) == null){
+            throw new DataNotFoundException("Gagal: Student dengan ID " + nim + " tidak ditemukan.");
+        }
         datas.removeIf(s -> s.getId().equals(nim));
         saveToFile(datas);
     }
