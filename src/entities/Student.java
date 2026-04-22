@@ -10,7 +10,7 @@ public class Student implements Serializable, DataRepository<String> {
     public Student(String nis, String nama, String alamat) {
         this.nis = nis;
         this.nama = nama;
-        this.alamat = alamat;
+        this.alamat = "\"" + alamat + "\"";
     }
 
     @Override

@@ -34,9 +34,11 @@ public class StudentRepository implements Repository<Student, String> {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
+
+                String alamat = data[2].replace("\"", "");
                 // memastikan data tidak kurang
                 if (data.length == 3) {
-                    datas.add(new Student(data[0], data[1], data[2]));
+                    datas.add(new Student(data[0], data[1], alamat));
                 }
             }
         } catch (IOException e) {
@@ -46,10 +48,14 @@ public class StudentRepository implements Repository<Student, String> {
 
     private void saveToFile(List<Student> students) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(lokasiFile))) {
-            for (Student student : students) {
-                String line = student.getId() + "," + student.getNama() + "," + student.getAlamat();
+            for(int i=0; i<students.size(); i++){
+                Student current = students.get(i);
+                String line = String.format("%s,%s,%s", current.getId(), current.getNama(), current.getAlamat());
                 writer.write(line);
-                writer.newLine();
+
+                if(i != students.size()-1){
+                    writer.newLine();
+                }
             }
         } catch (IOException e) {
             System.out.println("Gagal menyimpan ke file: " + e.getMessage());
