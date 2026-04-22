@@ -37,9 +37,9 @@ public class StudentRepository implements Repository<Student, String> {
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
 
-                String alamat = data[2].replace("\"", "");
                 // memastikan data tidak kurang
                 if (data.length == 3) {
+                    String alamat = data[2].replace("\"", "");
                     datas.add(new Student(data[0], data[1], alamat));
                 }
             }
