@@ -18,7 +18,7 @@ public class Student implements Serializable, DataRepository<String> {
 
     public String getNis() { return nis; }
     public String getNama() { return nama; }
-    public String getAlamat() { return alamat; }
+    public String getAlamat() { return alamat.replace("\"", ""); }
     public void setNis(String nis) { this.nis = nis; }
     public void setNama(String nama) { this.nama = nama; }
     public void setAlamat(String alamat) { this.alamat = alamat; }

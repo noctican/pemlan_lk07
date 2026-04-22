@@ -76,16 +76,6 @@ public class Main extends JFrame {
         btnUpdate.addActionListener(e -> updateData());
         btnDelete.addActionListener(e -> deleteData());
         btnClear.addActionListener(e -> clearForm());
-
-        table.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int row = table.getSelectedRow();
-                txtNis.setText(model.getValueAt(row, 0).toString());
-                txtNama.setText(model.getValueAt(row, 1).toString());
-                txtAlamat.setText(model.getValueAt(row, 2).toString());
-            }
-        });
     }
 
     // ===== LOAD TABLE =====
