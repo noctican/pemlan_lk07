@@ -1,7 +1,7 @@
-package entities;
+package src.entities;
 
-import interfaces.DataRepository;
 import java.io.Serializable;
+import src.interfaces.DataRepository;
 
 
 public class Student implements Serializable, DataRepository<String> {

@@ -1,10 +1,10 @@
-package repositories;
+package src.repositories;
 
-import entities.Student;
-import interfaces.Repository;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import src.entities.Student;
+import src.interfaces.Repository;
 
 
 public class StudentRepository implements Repository<Student, String> {
