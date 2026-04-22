@@ -1,4 +1,5 @@
 package src;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -9,47 +10,52 @@ import src.exceptions.DuplicateDataException;
 import src.repositories.StudentRepository;
 
 public class Main extends JFrame {
-    // Atribut dipake di StudentRepository
-    // private static ArrayList<String> data = new ArrayList<String>();
-    // private final static File lokasiFile = new File("./src/data/dataSiswa.csv");
-    // private final static File dirFile = new File("./src/data");
 
     // Atribut GUI
     private JTextField txtNis, txtNama, txtAlamat;
     private JTable table;
     private DefaultTableModel model;
-    //Objek Repository
+    
+    // Objek Repository
     private StudentRepository repo = new StudentRepository();
 
     public Main() {
         setTitle("Aplikasi Data Siswa");
-        setSize(700, 500);
+        setSize(750, 500); 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+        setLocationRelativeTo(null); 
+        
+        setLayout(new BorderLayout(15, 15));
+        
+        ((JPanel)getContentPane()).setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // ===== JUDUL =====
-        JLabel title = new JLabel("DATA SISWA", JLabel.CENTER);
+        // Untuk judul
+        JLabel title = new JLabel("MANAJEMEN DATA SISWA", JLabel.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 18));
         add(title, BorderLayout.NORTH);
 
-        // ===== FORM =====
-        JPanel form = new JPanel(new GridLayout(3,2));
+        // Untuk panel di kiri (Form & Tombol) 
+        JPanel panelKiri = new JPanel(new BorderLayout(0, 20));
+        panelKiri.setPreferredSize(new Dimension(280, 0)); 
+
+        // FORM 
+        JPanel form = new JPanel(new GridLayout(3, 2, 5, 10));
 
         txtNis = new JTextField();
         txtNama = new JTextField();
         txtAlamat = new JTextField();
 
-        form.add(new JLabel("NIS"));
+        form.add(new JLabel("NIS:"));
         form.add(txtNis);
-        form.add(new JLabel("Nama"));
+        form.add(new JLabel("Nama:"));
         form.add(txtNama);
-        form.add(new JLabel("Alamat"));
+        form.add(new JLabel("Alamat:"));
         form.add(txtAlamat);
 
-        add(form, BorderLayout.WEST);
+        panelKiri.add(form, BorderLayout.NORTH);
 
-        // ===== BUTTON =====
-        JPanel btnPanel = new JPanel(new GridLayout(4,1));
+        // Untuk Button
+        JPanel btnPanel = new JPanel(new GridLayout(2, 2, 10, 10));
 
         JButton btnTambah = new JButton("Tambah");
         JButton btnUpdate = new JButton("Update");
@@ -61,17 +67,20 @@ public class Main extends JFrame {
         btnPanel.add(btnDelete);
         btnPanel.add(btnClear);
 
-        add(btnPanel, BorderLayout.EAST);
+        panelKiri.add(btnPanel, BorderLayout.CENTER);
+        
+        // Masukkan panel kiri ke frame utama
+        add(panelKiri, BorderLayout.WEST);
 
-        // ===== TABLE =====
-        model = new DefaultTableModel(new String[]{"NIS","Nama","Alamat"}, 0);
+        // Table
+        model = new DefaultTableModel(new String[]{"NIS", "Nama", "Alamat"}, 0);
         table = new JTable(model);
 
         add(new JScrollPane(table), BorderLayout.CENTER);
 
         loadTable();
 
-        // ===== EVENT =====
+        // Event
         btnTambah.addActionListener(e -> tambahData());
         btnUpdate.addActionListener(e -> updateData());
         btnDelete.addActionListener(e -> deleteData());
@@ -147,47 +156,11 @@ public class Main extends JFrame {
         }
     }
 
-    private void clearForm() { //buat ngehapus field nya pas udah input atau pas klik clear
+    private void clearForm() { 
         txtNis.setText("");
         txtNama.setText("");
         txtAlamat.setText("");
     }
-
-    // // Method
-    // public static void save() {
-    //     if (!dirFile.exists()) dirFile.mkdir();
-
-    //     try (BufferedWriter bw = new BufferedWriter(new FileWriter(lokasiFile))) {
-
-    //         for (int i = 0; i < data.size(); i++) {
-    //             String[] pisah = data.get(i).trim().split(";");
-    //             bw.write(String.join(",", pisah));
-
-    //             if (i != data.size() - 1) {
-    //                 bw.newLine();
-    //             }
-    //         }
-    //     } catch (IOException e) {
-    //         System.out.println(e.getMessage());
-    //     }
-    // }
-
-    // public static void load() {
-    //     if (!dirFile.exists()) dirFile.mkdir();
-    //     if (!lokasiFile.exists()) return;
-
-    //     try (BufferedReader br = new BufferedReader(new FileReader(lokasiFile))) {
-    //         String line;
-
-    //         while ((line = br.readLine()) != null) {
-    //             String[] split = line.trim().split(",");
-    //             data.add(String.join(";", split));
-    //         }
-
-    //     } catch (IOException e) {
-    //         System.out.println(e.getMessage());
-    //     }
-    // }
 
     public static void main(String[] args){
         new Main().setVisible(true);
