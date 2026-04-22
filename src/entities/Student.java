@@ -26,7 +26,7 @@ public class Student implements Serializable, DataRepository<String> {
         return nama; 
     }
     public String getAlamat() { 
-        return alamat; 
+        return alamat.replace("\"", "");
     }
     
     // Setter

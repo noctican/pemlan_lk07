@@ -56,7 +56,7 @@ public class StudentRepository implements Repository<Student, String> {
             // Setiap objek Student diubah menjadi format CSV 
             for(int i=0; i<students.size(); i++){
                 Student current = students.get(i);
-                String line = String.format("%s,%s,%s", current.getId(), current.getNama(), current.getAlamat());
+                String line = String.format("%s,%s,\"%s\"", current.getId(), current.getNama(), current.getAlamat());
                 writer.write(line);
 
                 if(i != students.size()-1){

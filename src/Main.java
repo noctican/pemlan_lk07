@@ -114,33 +114,73 @@ public class Main extends JFrame {
     private void tambahData() {
         try {
             String nis = txtNis.getText();
-            Student s = new Student(
-                nis,
-                txtNama.getText(),
-                txtAlamat.getText()
-            );
-    
+            String nama = txtNama.getText();
+            String alamat = txtAlamat.getText();
+
+            if (nis.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "NIS wajib diisi!");
+                txtNis.requestFocus();
+                return;
+            }
+
+            if (nama.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Nama wajib diisi!");
+                txtNama.requestFocus();
+                return;
+            }
+
+            if (alamat.trim().isEmpty()) {
+                alamat = "";
+            }
+
+            Student s = new Student(nis, nama, alamat);
+
             repo.create(s);
             loadTable();
             clearForm();
+
+            JOptionPane.showMessageDialog(this, "Data berhasil ditambahkan!");
+
         } catch (DuplicateDataException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
+            txtNis.requestFocus();
         }
     }
 
     // ===== UPDATE =====
     private void updateData() {
         try {
-            String nis = txtNis.getText();
-            Student newData = new Student(
-                nis,
-                txtNama.getText(),
-                txtAlamat.getText()
-            );
+            String nis = txtNis.getText().trim();
+
+            if (nis.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Masukkan NIS!");
+                txtNis.requestFocus();
+                return;
+            }
+
+            Student existing = repo.findById(nis);
+
+            String namaBaru = txtNama.getText().trim();
+            if (namaBaru.isEmpty() && existing != null) {
+                namaBaru = existing.getNama();
+            }
+
+            String alamatBaru = txtAlamat.getText().trim();
+            if (alamatBaru.isEmpty() && existing != null) {
+                alamatBaru = existing.getAlamat();
+            }
+
+            Student newData = new Student(nis, namaBaru, alamatBaru);
+
             repo.update(nis, newData);
             loadTable();
+            clearForm();
+
+            JOptionPane.showMessageDialog(this, "Data berhasil diupdate!");
+
         } catch (DataNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
+            txtNis.requestFocus();
         }
     }
 
@@ -148,9 +188,26 @@ public class Main extends JFrame {
     private void deleteData() {
         try {
             String nis = txtNis.getText();
-            repo.delete(nis);
-            loadTable();
-            clearForm();
+
+            if (nis.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Pilih data dulu!");
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Yakin hapus data NIS " + nis + "?",
+                    "Konfirmasi",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                repo.delete(nis);
+                loadTable();
+                clearForm();
+                JOptionPane.showMessageDialog(this, "Data berhasil dihapus!");
+            }
+
         } catch (DataNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
